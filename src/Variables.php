@@ -4,31 +4,15 @@ namespace AliReaza\DotEnv\Resolver;
 
 use LogicException;
 
-/**
- * Class Variables
- *
- * @package AliReaza\DotEnv\Resolver
- */
 class Variables
 {
     protected array $variables;
 
-    /**
-     * Variables constructor.
-     *
-     * @param array $variables
-     */
     public function __construct(array $variables = [])
     {
         $this->variables = $variables;
     }
 
-    /**
-     * @param string $data
-     * @param array  $env
-     *
-     * @return string
-     */
     public function __invoke(string $data, array $env): string
     {
         if (str_contains($data, '$')) {

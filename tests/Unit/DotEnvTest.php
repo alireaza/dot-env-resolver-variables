@@ -10,16 +10,18 @@ use Throwable;
 
 class DotEnvTest extends TestCase
 {
-    public function test_When_create_new_DotEnv_without_arguments_Expect_env_property_must_array_and_empty()
+    public function test_When_create_new_DotEnv_without_arguments_Expect_env_property_must_array_and_empty(): void
     {
         $env = new DotEnv();
 
         $array = $env->toArray();
 
-        $this->assertTrue(is_array($array) && empty($array));
+        $this->assertIsArray($array);
+
+        $this->assertEmpty($array);
     }
 
-    public function test_When_create_new_DotEnv_and_load_file_Expect_env_property_must_array_of_file_variables()
+    public function test_When_create_new_DotEnv_and_load_file_Expect_env_property_must_array_of_file_variables(): void
     {
         mkdir($tmpdir = sys_get_temp_dir() . '/dotenv');
 
@@ -35,10 +37,14 @@ class DotEnvTest extends TestCase
 
         rmdir($tmpdir);
 
-        $this->assertTrue(is_array($env->toArray()) && $env->has('FOO') && $env->get('FOO') === 'BAR');
+        $this->assertIsArray($env->toArray());
+
+        $this->assertSame(true, $env->has('FOO'));
+
+        $this->assertSame('BAR', $env->get('FOO'));
     }
 
-    public function test_When_create_new_DotEnv_with_file_argument_Expect_env_property_must_array_of_file_variables()
+    public function test_When_create_new_DotEnv_with_file_argument_Expect_env_property_must_array_of_file_variables(): void
     {
         mkdir($tmpdir = sys_get_temp_dir() . '/dotenv');
 
@@ -52,10 +58,14 @@ class DotEnvTest extends TestCase
 
         rmdir($tmpdir);
 
-        $this->assertTrue(is_array($env->toArray()) && $env->has('FOO') && $env->get('FOO') === 'BAR');
+        $this->assertIsArray($env->toArray());
+
+        $this->assertSame(true, $env->has('FOO'));
+
+        $this->assertSame('BAR', $env->get('FOO'));
     }
 
-    public function test_When_create_new_DotEnv_with_file_and_resolvers_arguments_Expect_env_property_must_array_of_file_variables_that_must_be_converted_to_lowercase_by_resolver()
+    public function test_When_create_new_DotEnv_with_file_and_resolvers_arguments_Expect_env_property_must_array_of_file_variables_that_must_be_converted_to_lowercase_by_resolver(): void
     {
         mkdir($tmpdir = sys_get_temp_dir() . '/dotenv');
 
@@ -65,7 +75,7 @@ class DotEnvTest extends TestCase
 
         $env = new DotEnv($file, [
             new class {
-                public function __invoke(string $data)
+                public function __invoke(string $data): string
                 {
                     return strtolower($data);
                 }
@@ -76,10 +86,14 @@ class DotEnvTest extends TestCase
 
         rmdir($tmpdir);
 
-        $this->assertTrue(is_array($env->toArray()) && $env->has('FOO') && $env->get('FOO') === 'bar');
+        $this->assertIsArray($env->toArray());
+
+        $this->assertSame(true, $env->has('FOO'));
+
+        $this->assertSame('bar', $env->get('FOO'));
     }
 
-    public function test_When_create_new_DotEnv_with_empty_file_Expect_env_property_must_array_and_empty()
+    public function test_When_create_new_DotEnv_with_empty_file_Expect_env_property_must_array_and_empty(): void
     {
         mkdir($tmpdir = sys_get_temp_dir() . '/dotenv');
 
@@ -95,10 +109,12 @@ class DotEnvTest extends TestCase
 
         $array = $env->toArray();
 
-        $this->assertTrue(is_array($array) && empty($array));
+        $this->assertIsArray($array);
+
+        $this->assertEmpty($array);
     }
 
-    public function test_When_create_new_DotEnv_with_missing_equal_for_variable_in_file_Expect_throw_exception()
+    public function test_When_create_new_DotEnv_with_missing_equal_for_variable_in_file_Expect_throw_exception(): void
     {
         mkdir($tmpdir = sys_get_temp_dir() . '/dotenv');
 
@@ -123,7 +139,7 @@ class DotEnvTest extends TestCase
         rmdir($tmpdir);
     }
 
-    public function test_When_create_new_DotEnv_with_whitespace_character_after_variable_in_file_Expect_throw_exception()
+    public function test_When_create_new_DotEnv_with_whitespace_character_after_variable_in_file_Expect_throw_exception(): void
     {
         mkdir($tmpdir = sys_get_temp_dir() . '/dotenv');
 
@@ -148,7 +164,7 @@ class DotEnvTest extends TestCase
         rmdir($tmpdir);
     }
 
-    public function test_When_create_new_DotEnv_with_export_before_variable_in_file_Expect_env_property_must_array_of_file_variables()
+    public function test_When_create_new_DotEnv_with_export_before_variable_in_file_Expect_env_property_must_array_of_file_variables(): void
     {
         mkdir($tmpdir = sys_get_temp_dir() . '/dotenv');
 
@@ -162,10 +178,14 @@ class DotEnvTest extends TestCase
 
         rmdir($tmpdir);
 
-        $this->assertTrue(is_array($env->toArray()) && $env->has('FOO') && $env->get('FOO') === 'BAR');
+        $this->assertIsArray($env->toArray());
+
+        $this->assertSame(true, $env->has('FOO'));
+
+        $this->assertSame('BAR', $env->get('FOO'));
     }
 
-    public function test_When_create_new_DotEnv_with_whitespace_character_inside_variable_in_file_Expect_throw_exception()
+    public function test_When_create_new_DotEnv_with_whitespace_character_inside_variable_in_file_Expect_throw_exception(): void
     {
         mkdir($tmpdir = sys_get_temp_dir() . '/dotenv');
 
@@ -190,7 +210,7 @@ class DotEnvTest extends TestCase
         rmdir($tmpdir);
     }
 
-    public function test_When_create_new_DotEnv_with_whitespace_character_before_value_in_file_Expect_throw_exception()
+    public function test_When_create_new_DotEnv_with_whitespace_character_before_value_in_file_Expect_throw_exception(): void
     {
         mkdir($tmpdir = sys_get_temp_dir() . '/dotenv');
 
@@ -215,7 +235,7 @@ class DotEnvTest extends TestCase
         rmdir($tmpdir);
     }
 
-    public function test_When_create_new_DotEnv_with_whitespace_character_inside_value_in_file_Expect_env_property_must_array_of_file_variables()
+    public function test_When_create_new_DotEnv_with_whitespace_character_inside_value_in_file_Expect_env_property_must_array_of_file_variables(): void
     {
         mkdir($tmpdir = sys_get_temp_dir() . '/dotenv');
 
@@ -229,10 +249,14 @@ class DotEnvTest extends TestCase
 
         rmdir($tmpdir);
 
-        $this->assertTrue(is_array($env->toArray()) && $env->has('FOO') && $env->get('FOO') === 'BAR BAZ');
+        $this->assertIsArray($env->toArray());
+
+        $this->assertSame(true, $env->has('FOO'));
+
+        $this->assertSame('BAR BAZ', $env->get('FOO'));
     }
 
-    public function test_When_create_new_DotEnv_with_value_with_single_quotes_in_file_Expect_env_property_must_array_of_file_variables_without_quotes()
+    public function test_When_create_new_DotEnv_with_value_with_single_quotes_in_file_Expect_env_property_must_array_of_file_variables_without_quotes(): void
     {
         mkdir($tmpdir = sys_get_temp_dir() . '/dotenv');
 
@@ -246,10 +270,14 @@ class DotEnvTest extends TestCase
 
         rmdir($tmpdir);
 
-        $this->assertTrue(is_array($env->toArray()) && $env->has('FOO') && $env->get('FOO') === 'BAR BAZ');
+        $this->assertIsArray($env->toArray());
+
+        $this->assertSame(true, $env->has('FOO'));
+
+        $this->assertSame('BAR BAZ', $env->get('FOO'));
     }
 
-    public function test_When_create_new_DotEnv_with_value_with_double_quotes_in_file_Expect_env_property_must_array_of_file_variables_without_quotes()
+    public function test_When_create_new_DotEnv_with_value_with_double_quotes_in_file_Expect_env_property_must_array_of_file_variables_without_quotes(): void
     {
         mkdir($tmpdir = sys_get_temp_dir() . '/dotenv');
 
@@ -263,6 +291,10 @@ class DotEnvTest extends TestCase
 
         rmdir($tmpdir);
 
-        $this->assertTrue(is_array($env->toArray()) && $env->has('FOO') && $env->get('FOO') === 'BAR BAZ');
+        $this->assertIsArray($env->toArray());
+
+        $this->assertSame(true, $env->has('FOO'));
+
+        $this->assertSame('BAR BAZ', $env->get('FOO'));
     }
 }

@@ -26,6 +26,10 @@ class VariablesTest extends TestCase
 
         rmdir($tmpdir);
 
-        $this->assertTrue(is_array($env->toArray()) && $env->has('BAZ') && $env->get('BAZ') === 'BAR');
+        $this->assertIsArray($env->toArray());
+
+        $this->assertSame(true, $env->has('BAZ'));
+
+        $this->assertSame('BAR', $env->get('BAZ'));
     }
 }

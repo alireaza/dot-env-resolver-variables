@@ -1,6 +1,6 @@
 {
   "name": "alireaza/dot-env-resolver-variables",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "type": "library",
   "license": "MIT",
   "description": "This is Variables Resolver package for DotEnv.",
@@ -27,10 +27,10 @@
   ],
   "require": {
     "php": "^8.0.0",
-    "alireaza/dot-env": "1.2.0"
+    "alireaza/dot-env": "1.3.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "9.5.11"
+    "phpunit/phpunit": "^9.5.16"
   },
   "autoload": {
     "psr-4": {
